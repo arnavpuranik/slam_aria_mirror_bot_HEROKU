@@ -115,7 +115,7 @@ class GoogleDriveHelper:
                                      resumable=False)
         file_metadata = {
             'name': file_name,
-            'description': 'Uploaded using AT_BOTS',
+            'description': 'Uploaded using Arnavs Mirror Bot',
             'mimeType': mime_type,
         }
         if parent_id is not None:
@@ -169,7 +169,7 @@ class GoogleDriveHelper:
         # File body description
         file_metadata = {
             'name': file_name,
-            'description': 'Uploaded by AT_BOTS',
+            'description': 'Uploaded by Arnavs Mirror Bot',
             'mimeType': mime_type,
         }
         try:
@@ -244,7 +244,7 @@ class GoogleDriveHelper:
                 link = self.upload_file(file_path, file_name, mime_type, parent_id)
                 if link is None:
                     raise Exception('Upload has been manually cancelled')
-                LOGGER.info("Uploaded To G-Drive: " + file_path)
+                LOGGER.info("Uploaded To Google Drive: " + file_path)
             except Exception as e:
                 if isinstance(e, RetryError):
                     LOGGER.info(f"Total Attempts: {e.last_attempt.attempt_number}")
@@ -262,7 +262,7 @@ class GoogleDriveHelper:
                 result = self.upload_dir(file_path, dir_id)
                 if result is None:
                     raise Exception('Upload has been manually cancelled!')
-                LOGGER.info("Uploaded To G-Drive: " + file_name)
+                LOGGER.info("Uploaded To Google Drive: " + file_name)
                 link = f"https://drive.google.com/folderview?id={dir_id}"
             except Exception as e:
                 if isinstance(e, RetryError):
@@ -355,25 +355,25 @@ class GoogleDriveHelper:
             if meta.get("mimeType") == self.__G_DRIVE_DIR_MIME_TYPE:
                 dir_id = self.create_directory(meta.get('name'), parent_id)
                 self.cloneFolder(meta.get('name'), meta.get('name'), meta.get('id'), dir_id)
-                msg += f'<b>☞ 📂 Filename: </b><code>{meta.get("name")}</code>\n<b>☞ 📦 Size: </b><code>{get_readable_file_size(self.transferred_size)}</code>'
-                msg += f'\n<b>☞ 🌀 Type: </b><code>Folder</code>'
-                msg += f'\n<b>☞ 🗳 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆</b> @AT_BOTS'
+                msg += f'<b> Filename: </b><code>{meta.get("name")}</code>\n<b> Size: </b><code>{get_readable_file_size(self.transferred_size)}</code>'
+                msg += f'\n<b> Type: </b><code>Folder</code>'
+                msg += f'\n<b> 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆</b> Arnavs Mirror Bot'
 #                 msg += f'\n<b>Files: </b><code>{self.total_files}</code>'
                 durl = self.__G_DRIVE_DIR_BASE_DOWNLOAD_URL.format(dir_id)
                 buttons = button_build.ButtonMaker()
                 if SHORTENER is not None and SHORTENER_API is not None:
                     surl = requests.get(f'https://{SHORTENER}/api?api={SHORTENER_API}&url={durl}&format=text').text
-                    buttons.buildbutton("🌠 Drive Link 🌠", surl)
+                    buttons.buildbutton(" Google Drive Link ", surl)
                 else:
-                    buttons.buildbutton("🌠 Drive Link 🌠", durl)
+                    buttons.buildbutton(" Google Drive Link", durl)
                 if INDEX_URL is not None:
                     url_path = requests.utils.quote(f'{meta.get("name")}')
                     url = f'{INDEX_URL}/{url_path}/'
                     if SHORTENER is not None and SHORTENER_API is not None:
                         siurl = requests.get(f'https://{SHORTENER}/api?api={SHORTENER_API}&url={url}&format=text').text
-                        buttons.buildbutton("☄️ Index Link ☄️", siurl)
+                        buttons.buildbutton(" Index Link ", siurl)
                     else:
-                        buttons.buildbutton("☄️ Index Link ☄️", url)
+                        buttons.buildbutton(" Index Link ", url)
                 if BUTTON_FOUR_NAME is not None and BUTTON_FOUR_URL is not None:
                     buttons.buildbutton(f"{BUTTON_FOUR_NAME}", f"{BUTTON_FOUR_URL}")
                 if BUTTON_FIVE_NAME is not None and BUTTON_FIVE_URL is not None:
@@ -382,21 +382,21 @@ class GoogleDriveHelper:
                     buttons.buildbutton(f"{BUTTON_SIX_NAME}", f"{BUTTON_SIX_URL}")
             else:
                 file = self.copyFile(meta.get('id'), parent_id)
-                msg += f'<b>☞ 📂 Filename: </b><code>{file.get("name")}</code>'
+                msg += f'<b> Filename: </b><code>{file.get("name")}</code>'
                 durl = self.__G_DRIVE_BASE_DOWNLOAD_URL.format(file.get("id"))
                 buttons = button_build.ButtonMaker()
                 if SHORTENER is not None and SHORTENER_API is not None:
                     surl = requests.get(f'https://{SHORTENER}/api?api={SHORTENER_API}&url={durl}&format=text').text
-                    buttons.buildbutton("🌠 Drive Link 🌠", surl)
+                    buttons.buildbutton(" Google Drive Link ", surl)
                 else:
-                    buttons.buildbutton("🌠 Drive Link 🌠", durl)
+                    buttons.buildbutton(" Google Drive Link ", durl)
                 try:
                     typeee = file.get('mimeType')
                 except:
                     typeee = 'File' 
                 try:
-                    msg += f'\n<b>☞ 📦 Size: </b><code>{get_readable_file_size(int(meta.get("size")))}</code>'
-                    msg += f'\n<b>☞ 🗳 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆 </b> @AT_BOTS'
+                    msg += f'\n<b> Size: </b><code>{get_readable_file_size(int(meta.get("size")))}</code>'
+                    msg += f'\n<b> 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆 </b> Arnavs Mirror Bot'
                 except TypeError:
                     pass
                 if INDEX_URL is not None:
@@ -406,13 +406,13 @@ class GoogleDriveHelper:
                     if SHORTENER is not None and SHORTENER_API is not None:
                         siurl = requests.get(f'https://{SHORTENER}/api?api={SHORTENER_API}&url={url}&format=text').text
                         siurls = requests.get(f'https://{SHORTENER}/api?api={SHORTENER_API}&url={urls}&format=text').text
-                        buttons.buildbutton("☄️ Index Link ☄️", siurl)
+                        buttons.buildbutton("Index Link", siurl)
                         if VIEW_LINK:
-                            buttons.buildbutton("🌐 View Link", siurls)
+                            buttons.buildbutton("View Link", siurls)
                     else:
-                        buttons.buildbutton("☄️ Index Link ☄️", url)
+                        buttons.buildbutton("Index Link", url)
                         if VIEW_LINK:
-                            buttons.buildbutton("🌐 View Link", urls)
+                            buttons.buildbutton("View Link", urls)
                 if BUTTON_FOUR_NAME is not None and BUTTON_FOUR_URL is not None:
                     buttons.buildbutton(f"{BUTTON_FOUR_NAME}", f"{BUTTON_FOUR_URL}")
                 if BUTTON_FIVE_NAME is not None and BUTTON_FIVE_URL is not None:
@@ -535,9 +535,9 @@ class GoogleDriveHelper:
                     content += f'<b> | <a href="https://telegra.ph/{self.path[nxt_page]}">Next</a></b>'
                     nxt_page += 1
             Telegraph(access_token=telegraph_token).edit_page(path = self.path[prev_page],
-                                 title = 'AT_BOTs',
-                                 author_name='AT_BOTs',
-                                 author_url='https://t.me/AT_BOTs',
+                                 title = 'Arnavs Mirror Bot Search',
+                                 author_name='Arnav',
+                                 author_url='https://t.me/arnavpuranik',
                                  html_content=content)
         return
 
@@ -620,9 +620,9 @@ class GoogleDriveHelper:
 
             for content in self.telegraph_content :
                 self.path.append(Telegraph(access_token=telegraph_token).create_page(
-                                                        title = 'AT_BOTs',
-                                                        author_name='AT_BOTs',
-                                                        author_url='https://t.me/AT_BOTs',
+                                                        title = 'Arnavs Mirror Bot Search',
+                                                        author_name='Arnav',
+                                                        author_url='https://t.me/arnavpuranik',
                                                         html_content=content
                                                         )['path'])
 
@@ -632,7 +632,7 @@ class GoogleDriveHelper:
 
             msg = f"<b>Found {len(response['files'])} results for <i>{fileName}</i></b>"
             buttons = button_build.ButtonMaker()   
-            buttons.buildbutton("🔎 VIEW", f"https://telegra.ph/{self.path[0]}")
+            buttons.buildbutton("VIEW", f"https://telegra.ph/{self.path[0]}")
 
             return msg, InlineKeyboardMarkup(buttons.build_menu(1))
 
@@ -654,12 +654,12 @@ class GoogleDriveHelper:
             LOGGER.info(f"Counting: {name}")
             if drive_file['mimeType'] == self.__G_DRIVE_DIR_MIME_TYPE:
                 self.gDrive_directory(**drive_file)
-                msg += f'<b>☞ 📂 Filename: </b><code>{name}</code>'
-                msg += f'\n<b>☞ 📦 Size: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
-                msg += f'\n<b>☞ 🌀 Type: </b><code>Folder</code>'
-                msg += f'\n<b>☞ 🗳 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆</b> @AT_BOTs'
+                msg += f'<b> Filename: </b><code>{name}</code>'
+                msg += f'\n<b> Size: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
+                msg += f'\n<b> Type: </b><code>Folder</code>'
+                msg += f'\n<b> 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆</b> Arnavs Mirror Bot'
             else:
-                msg += f'<b>☞ 📂 Filename: </b><code>{name}</code>'
+                msg += f'<b> Filename: </b><code>{name}</code>'
                 try:
                     typee = drive_file['mimeType']
                 except:
@@ -667,9 +667,9 @@ class GoogleDriveHelper:
                 try:
                     self.total_files += 1
                     self.gDrive_file(**drive_file)
-                    msg += f'\n<b>☞ 📦 Size: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
-                    msg += f'\n<b>☞ 🌀 Type: </b><code>{typee}</code>'
-                    msg += f'\n<b>☞ 🗳 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆</b> @AT_BOTs'
+                    msg += f'\n<b>Size: </b><code>{get_readable_file_size(self.total_bytes)}</code>'
+                    msg += f'\n<b>Type: </b><code>{typee}</code>'
+                    msg += f'\n<b> 𝗣𝗼𝘄𝗲𝗿𝗲𝗱 𝗕𝘆</b> Arnavs Mirror Bot'
                 except TypeError:
                     pass
         except Exception as err:
